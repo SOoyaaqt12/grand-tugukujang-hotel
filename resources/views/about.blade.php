@@ -125,7 +125,6 @@
 
         /* Hero About */
         .hero-about {
-            height: 60vh;
             position: relative;
             display: flex;
             align-items: center;
@@ -133,7 +132,7 @@
             background-image: url('build/assets/images/lobby-index.jpg');
             background-size: cover;
             background-position: bottom;
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-repeat: no-repeat;
             overflow: hidden;
             height: 100vh;
@@ -226,7 +225,8 @@
         .story-image {
             width: 100%;
             height: 500px;
-            background-image: url('build/assets/images/lobby-inde.jpg');
+            background-image: url('build/assets/images/receptionist-about.jpg');
+            background-size: cover;
             border-radius: 20px;
             overflow: hidden;
             position: relative;
@@ -234,7 +234,6 @@
         }
 
         .story-image::before {
-            content: '🏰';
             position: absolute;
             top: 50%;
             left: 50%;
@@ -275,8 +274,31 @@
 
         /* Values Section */
         .values-section {
-            background: #0a0a0a;
+            background-image: url('build/assets/images/about-hero2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: scroll;
+            background-repeat: no-repeat;
+            overflow: hidden;
             padding: 100px 20px;
+        }
+
+        .values-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Overlay gradasi emas + hitam elegan */
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.6), 
+                rgba(0, 0, 0, 0.6)
+            ),
+            radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 70% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            opacity: 0.9;
+            z-index: 1;
         }
 
         .values-title {
