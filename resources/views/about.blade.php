@@ -129,7 +129,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: url('build/assets/images/lobby-index.jpg');
+            background-image: url('{{asset('storage/assets/images/lobby-index.jpg')}}');
             background-size: cover;
             background-position: bottom;
             background-attachment: scroll;
@@ -225,7 +225,7 @@
         .story-image {
             width: 100%;
             height: 500px;
-            background-image: url('build/assets/images/receptionist-about.jpg');
+            background-image: url('{{asset('storage/assets/images/receptionist-about.jpg')}}');
             background-size: cover;
             border-radius: 20px;
             overflow: hidden;
@@ -274,7 +274,7 @@
 
         /* Values Section */
         .values-section {
-            background-image: url('build/assets/images/about-hero2.jpg');
+            background-image: url('{{asset('storage/assets/images/about-hero2.jpg')}}');
             background-size: cover;
             background-position: center;
             background-attachment: scroll;
@@ -630,7 +630,7 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <a href="/" class="navbar-logo">
-            <img class="navbar-logo-icon" src="build/assets/images/logo.png"/>
+            <img class="navbar-logo-icon" src="{{asset('storage/assets/images/logo.png')}}"/>
             <span class="navbar-logo-text">GRAND TUGU KUJANG</span>
         </a>
 

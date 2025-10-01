@@ -24,14 +24,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: url('/build/assets/images/lobby-index.jpg');
+            background-image: url('{{ asset('storage/assets/images/lobby-index.jpg')}}');
             background-size: cover;       /* gambar menyesuaikan layar */
             background-position: center;  /* posisi fokus tengah */
             background-repeat: no-repeat; /* biar gak diulang */
             background-attachment: fixed;
             height: 100vh;                /* tinggi penuh layar */
             overflow: hidden;
-            z-index: 0;
+            z-index: 1;
         }
 
         .hero::before {
@@ -49,7 +49,7 @@
             radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
             radial-gradient(circle at 70% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
             opacity: 0.9;
-            z-index: 1;
+            z-index: 0;
         }
 
         @keyframes shimmer {
@@ -153,6 +153,7 @@
             background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
             padding: 100px 20px;
             position: relative;
+            z-index: 2;
         }
 
         .features::before {
@@ -224,6 +225,8 @@
         .gallery {
             background: #0a0a0a;
             padding: 100px 20px;
+            position: relative;
+            z-index: 3;
         }
 
         .gallery-title {
@@ -514,14 +517,14 @@
 <body>
     <nav class="navbar" id="navbar">
         <a href="/" class="navbar-logo">
-            <img class="navbar-logo-icon" src="build/assets/images/logo.png"/>
+            <img class="navbar-logo-icon" src="{{ asset('storage/assets/images/logo.png')}}"/>
             <span class="navbar-logo-text">GRAND TUGU KUJANG</span>
         </a>
         
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="#gallery">Product</a></li>
+            <li><a href="/product">Product</a></li>
             <li><a href="#gallery">Price</a></li>
             <li><a href="#contact">Reservation</a></li>
         </ul>
@@ -534,7 +537,7 @@
     </nav>
     <section class="hero">
         <div class="hero-content">
-            <img class="logo" src="build/assets/images/logo.png" alt="">
+            <img class="logo" src="{{asset('storage/assets/images/logo.png')}}" alt="">
             <h1 class="title-logo">Grand Tugu Kujang</h1>
             <p class="subtitle">Where Luxury Meets Elegance</p>
             <div class="decorative-line"></div>
@@ -566,27 +569,27 @@
         <h2 class="gallery-title">Galeri Kemewahan</h2>
         <div class="gallery-grid">
             <div class="gallery-item">
-                <img class="gallery-item-image" src="/build/assets/images/president-suite-room-index.jpg" alt="">
+                <img class="gallery-item-image" src="{{asset('storage/assets/images/president-suite-room-index.jpg')}}" alt="">
                 <div class="gallery-label">Presidential Suite</div>
             </div>
             <div class="gallery-item">
-                <img class="gallery-item-image" src="/build/assets/images/grand-ballroom-index.jpg" alt="">
+                <img class="gallery-item-image" src="{{asset('storage/assets/images/grand-ballroom-index.jpg')}}" alt="">
                 <div class="gallery-label">Grand Ballroom</div>
             </div>
             <div class="gallery-item">
-                <img class="gallery-item-image" src="/build/assets/images/infinty-pool-index.jpg" alt="">
+                <img class="gallery-item-image" src="{{asset('storage/assets/images/infinty-pool-index.jpg')}}" alt="">
                 <div class="gallery-label">Infinity Pool</div>
             </div>
             <div class="gallery-item">
-                <img class="gallery-item-image" src="/build/assets/images/restaurant-index.jpg" alt="">
+                <img class="gallery-item-image" src="{{asset('storage/assets/images/restaurant-index.jpg')}}" alt="">
                 <div class="gallery-label">Restaurant</div>
             </div>
             <div class="gallery-item">
-                <img class="gallery-item-image" src="/build/assets/images/lobby-lounge-index.jpg" alt="">
+                <img class="gallery-item-image" src="{{asset('storage/assets/images/lobby-lounge-index.jpg')}}" alt="">
                 <div class="gallery-label">Lobby Lounge</div>
             </div>
             <div class="gallery-item">
-                <img class="gallery-item-image" src="/build/assets/images/garden-index.jpg" alt="">
+                <img class="gallery-item-image" src="{{asset('storage/assets/images/garden-index.jpg')}}" alt="">
                 <div class="gallery-label">Garden View</div>
             </div>
         </div>
