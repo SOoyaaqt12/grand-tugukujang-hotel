@@ -524,9 +524,8 @@
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/product">Product</a></li>
-            <li><a href="#gallery">Price</a></li>
-            <li><a href="#contact">Reservation</a></li>
+            <li><a href="/products">Product</a></li>
+            <li><a href="/price">Price</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">
@@ -541,7 +540,7 @@
             <h1 class="title-logo">Grand Tugu Kujang</h1>
             <p class="subtitle">Where Luxury Meets Elegance</p>
             <div class="decorative-line"></div>
-            <button class="cta-button" onclick="window.location.href='/'">Reservasi Sekarang</button>   
+            <button class="cta-button" onclick="window.location.href='/products'">Cek Kamar</button>   
         </div>
     </section>
 

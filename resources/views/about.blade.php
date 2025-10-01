@@ -56,8 +56,6 @@
 
         .navbar.scrolled .navbar-logo-icon {
             width: 60px;
-            height: auto;
-            font-size: 20px;
         }
 
         .navbar-logo-text {
@@ -68,6 +66,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled .navbar-logo-text {
+            font-size: 20px;
         }
 
         .navbar-menu {
@@ -123,17 +126,29 @@
             transition: all 0.3s ease;
         }
 
+        .mobile-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
         /* Hero About */
         .hero-about {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: url('{{asset('storage/assets/images/lobby-index.jpg')}}');
+            background-image: url('{{ asset('storage/assets/images/lobby-index.jpg') }}');
             background-size: cover;
-            background-position: bottom;
-            background-attachment: scroll;
+            background-position: center;
             background-repeat: no-repeat;
+            background-attachment: scroll;
             overflow: hidden;
             height: 100vh;
         }
@@ -145,7 +160,6 @@
             left: 0;
             right: 0;
             bottom: 0;
-            /* Overlay gradasi emas + hitam elegan */
             background: linear-gradient(
                 rgba(0, 0, 0, 0.6), 
                 rgba(0, 0, 0, 0.6)
@@ -154,11 +168,6 @@
             radial-gradient(circle at 70% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
             opacity: 0.9;
             z-index: 1;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
         }
 
         .hero-about-content {
@@ -225,21 +234,18 @@
         .story-image {
             width: 100%;
             height: 500px;
-            background-image: url('{{asset('storage/assets/images/receptionist-about.jpg')}}');
+            background: url('{{ asset('storage/assets/images/receptionist-about.jpg') }}');
             background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             border-radius: 20px;
             overflow: hidden;
             position: relative;
             box-shadow: 0 20px 60px rgba(212, 175, 55, 0.2);
-        }
-
-        .story-image::before {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 120px;
-            opacity: 0.3;
         }
 
         .story-content h2 {
@@ -274,31 +280,9 @@
 
         /* Values Section */
         .values-section {
-            background-image: url('{{asset('storage/assets/images/about-hero2.jpg')}}');
-            background-size: cover;
-            background-position: center;
-            background-attachment: scroll;
-            background-repeat: no-repeat;
-            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
             padding: 100px 20px;
-        }
-
-        .values-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            /* Overlay gradasi emas + hitam elegan */
-            background: linear-gradient(
-                rgba(0, 0, 0, 0.6), 
-                rgba(0, 0, 0, 0.6)
-            ),
-            radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 70% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
-            opacity: 0.9;
-            z-index: 1;
+            position: relative;
         }
 
         .values-title {
@@ -319,7 +303,7 @@
         }
 
         .value-card {
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.6), rgba(15, 52, 96, 0.3));
+            background: rgba(26, 26, 46, 0.6);
             padding: 50px 30px;
             text-align: center;
             border-radius: 20px;
@@ -372,7 +356,7 @@
 
         /* Timeline Section */
         .timeline-section {
-            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+            background: #0a0a0a;
             padding: 100px 20px;
         }
 
@@ -453,7 +437,7 @@
 
         /* Team Section */
         .team-section {
-            background: #0a0a0a;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
             padding: 100px 20px;
         }
 
@@ -475,7 +459,7 @@
         }
 
         .team-card {
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.6), rgba(15, 52, 96, 0.3));
+            background: rgba(26, 26, 46, 0.6);
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(212, 175, 55, 0.2);
@@ -518,7 +502,7 @@
 
         /* CTA Section */
         .cta-section {
-            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+            background: #0a0a0a;
             padding: 100px 20px;
             text-align: center;
         }
@@ -550,6 +534,23 @@
             font-weight: bold;
             transition: all 0.4s ease;
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
         }
 
         .cta-button:hover {
@@ -572,6 +573,10 @@
                 padding: 15px 20px;
             }
 
+            .navbar.scrolled {
+                padding: 12px 20px;
+            }
+
             .mobile-toggle {
                 display: flex;
             }
@@ -592,6 +597,14 @@
 
             .navbar-menu.active {
                 left: 0;
+            }
+
+            .navbar-logo-text {
+                font-size: 18px;
+            }
+
+            .navbar.scrolled .navbar-logo-text {
+                font-size: 16px;
             }
 
             .hero-about h1 {
@@ -630,16 +643,15 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <a href="/" class="navbar-logo">
-            <img class="navbar-logo-icon" src="{{asset('storage/assets/images/logo.png')}}"/>
+            <img class="navbar-logo-icon" src="{{ asset('storage/assets/images/logo.png')}}"/>
             <span class="navbar-logo-text">GRAND TUGU KUJANG</span>
         </a>
 
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="#gallery">Product</a></li>
-            <li><a href="#gallery">Price</a></li>
-            <li><a href="#contact">Reservation</a></li>
+            <li><a href="/products">Product</a></li>
+            <li><a href="/price">Price</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">
@@ -793,7 +805,7 @@
         <h2 class="cta-title">Rasakan Pengalaman Tak Terlupakan</h2>
         <div class="decorative-line"></div>
         <p class="cta-text">Bergabunglah dengan ribuan tamu yang telah merasakan kemewahan Grand Tugu Kujang</p>
-        <a href="#kontak" class="cta-button">Reservasi Sekarang</a>
+        <a href="#" class="cta-button" onclick="alert('Sistem reservasi akan segera hadir!'); return false;">Reservasi Sekarang</a>
     </section>
 
     <!-- Footer -->
@@ -808,14 +820,11 @@
         const mobileToggle = document.getElementById('mobileToggle');
         const navbarMenu = document.getElementById('navbarMenu');
 
-        // Navbar is always solid on about page
-        navbar.classList.add('scrolled');
-
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
-                navbar.classList.add('scrolled'); // Keep solid
+                navbar.classList.remove('scrolled');
             }
         });
 
@@ -865,4 +874,9 @@
         document.querySelectorAll('.value-card, .timeline-item, .team-card').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
-            el.style.
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

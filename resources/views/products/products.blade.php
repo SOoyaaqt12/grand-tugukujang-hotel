@@ -30,8 +30,13 @@
             justify-content: space-between;
             align-items: center;
             transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
+            padding: 15px 50px;
             box-shadow: 0 5px 30px rgba(212, 175, 55, 0.2);
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
         }
@@ -44,19 +49,28 @@
         }
 
         .navbar-logo-icon {
-            width: 60px;
+            width: 70px;
             height: auto;
             transition: all 0.3s ease;
         }
 
+        .navbar.scrolled .navbar-logo-icon {
+            width: 60px;
+        }
+
         .navbar-logo-text {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 300;
             letter-spacing: 3px;
             background: linear-gradient(135deg, #d4af37 0%, #f4e5b0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled .navbar-logo-text {
+            font-size: 20px;
         }
 
         .navbar-menu {
@@ -120,8 +134,8 @@
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            margin-top: 80px;
             overflow: hidden;
+            height: 100vh;
         }
 
         .page-header::before {
@@ -199,7 +213,7 @@
 
         .room-card {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1.2fr;
             gap: 60px;
             margin-bottom: 100px;
             background: rgba(26, 26, 46, 0.6);
@@ -226,8 +240,9 @@
 
         .room-image-container {
             position: relative;
-            height: 500px;
+            height: 700px;
             overflow: hidden;
+            background: linear-gradient(135deg, #2c2c3e 0%, #1a1a2e 100%);
         }
 
         .room-image {
@@ -235,6 +250,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.6s ease;
+            opacity: 1;
         }
 
         .room-card:hover .room-image {
@@ -250,6 +266,7 @@
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(15, 52, 96, 0.3));
             opacity: 0;
             transition: opacity 0.4s ease;
+            pointer-events: none;
         }
 
         .room-card:hover .room-image-overlay {
@@ -437,6 +454,10 @@
                 padding: 15px 20px;
             }
 
+            .navbar.scrolled {
+                padding: 12px 20px;
+            }
+
             .mobile-toggle {
                 display: flex;
             }
@@ -460,6 +481,10 @@
             }
 
             .navbar-logo-text {
+                font-size: 18px;
+            }
+
+            .navbar.scrolled .navbar-logo-text {
                 font-size: 16px;
             }
 
@@ -498,24 +523,15 @@
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <a href="/" class="navbar-logo">
-            <svg class="navbar-logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 10L90 90H10L50 10Z" fill="url(#gold-gradient)"/>
-                <defs>
-                    <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#f4e5b0;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-            </svg>
+            <img src="{{asset('storage/assets/images/logo.png')}}" class="navbar-logo-icon"/>
             <span class="navbar-logo-text">GRAND TUGU KUJANG</span>
         </a>
         
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/rooms">Product</a></li>
+            <li><a href="/products">Product</a></li>
             <li><a href="/price">Price</a></li>
-            <li><a href="/reservation">Reservation</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">
@@ -537,199 +553,42 @@
     <!-- Rooms Section -->
     <section class="rooms-section">
         <div class="rooms-container">
-            <!-- Presidential Suite -->
-            <div class="room-card">
-                <div class="room-image-container">
-                    <div class="room-badge">Terpopuler</div>
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2c2c3e 0%, #1a1a2e 100%);"></div>
-                    <div class="room-image-overlay"></div>
-                </div>
-                <div class="room-content">
-                    <div class="room-category">Suite Mewah</div>
-                    <h2 class="room-name">Presidential Suite</h2>
-                    <p class="room-description">
-                        Rasakan kemewahan tertinggi di Presidential Suite kami yang menampilkan desain interior eksklusif, ruang tamu pribadi, dan pemandangan kota yang menakjubkan. Dilengkapi dengan fasilitas premium untuk pengalaman menginap yang tak terlupakan.
-                    </p>
-                    <div class="room-features">
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🛏️</span>
-                            <span>King Size Bed</span>
+            @foreach ( $products as $product )
+                <!-- Presidential Suite -->
+                <div class="room-card">
+                    <div class="room-image-container">
+                        @if ($loop->first)
+                            <div class="room-badge">Terpopuler</div>
+                        @endif
+                        <img class="room-image" 
+                        src="{{ asset($product->main_image) }}" alt="{{ $product->title }}">
+                        <div class="room-image-overlay"></div>
+                    </div>
+                    <div class="room-content">
+                        <div class="room-category">{{$product->type}}</div>
+                        <h2 class="room-name">{{$product->title}}</h2>
+                        <p class="room-description">
+                            {{$product->description}}
+                        </p>
+                        <div class="room-features">
+                            @foreach ( explode(',',$product->features) as $feature )
+                                <div class="room-feature">
+                                    <span class="room-feature-icon">⁜</span>
+                                    <span>{{trim($feature)}}</span>
+                                </div>
+                            @endforeach
+                            <h3 class="room-description">Kapasitas {{$product->capacity}} Tamu</h3>
                         </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">📏</span>
-                            <span>120 m²</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">👥</span>
-                            <span>2-4 Tamu</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🌃</span>
-                            <span>City View</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🛁</span>
-                            <span>Jacuzzi Premium</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">☕</span>
-                            <span>Private Lounge</span>
+                        <div class="room-price-container">
+                            <div>
+                                <div class="room-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                                <div class="room-price-label">per malam</div>
+                            </div>
+                            <a href="{{route('products.show', $product->id )}}" class="room-cta">Detail Kamar</a>
                         </div>
                     </div>
-                    <div class="room-price-container">
-                        <div>
-                            <div class="room-price">Rp 15.000.000</div>
-                            <div class="room-price-label">per malam</div>
-                        </div>
-                        <button class="room-cta" onclick="alert('Sistem reservasi akan segera hadir!')">Pesan Sekarang</button>
-                    </div>
                 </div>
-            </div>
-
-            <!-- Executive Suite -->
-            <div class="room-card">
-                <div class="room-image-container">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #3d3d52 0%, #2a2a3e 100%);"></div>
-                    <div class="room-image-overlay"></div>
-                </div>
-                <div class="room-content">
-                    <div class="room-category">Suite Premium</div>
-                    <h2 class="room-name">Executive Suite</h2>
-                    <p class="room-description">
-                        Suite eksekutif yang sempurna untuk profesional modern. Dilengkapi dengan area kerja yang luas, teknologi terkini, dan kenyamanan maksimal untuk produktivitas dan relaksasi.
-                    </p>
-                    <div class="room-features">
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🛏️</span>
-                            <span>King/Twin Bed</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">📏</span>
-                            <span>75 m²</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">👥</span>
-                            <span>2 Tamu</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">💼</span>
-                            <span>Work Space</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">📺</span>
-                            <span>Smart TV 65"</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">☕</span>
-                            <span>Mini Bar</span>
-                        </div>
-                    </div>
-                    <div class="room-price-container">
-                        <div>
-                            <div class="room-price">Rp 8.500.000</div>
-                            <div class="room-price-label">per malam</div>
-                        </div>
-                        <button class="room-cta" onclick="alert('Sistem reservasi akan segera hadir!')">Pesan Sekarang</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Deluxe Room -->
-            <div class="room-card">
-                <div class="room-image-container">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #4a4a5e 0%, #353545 100%);"></div>
-                    <div class="room-image-overlay"></div>
-                </div>
-                <div class="room-content">
-                    <div class="room-category">Kamar Premium</div>
-                    <h2 class="room-name">Deluxe Room</h2>
-                    <p class="room-description">
-                        Kamar deluxe yang menggabungkan kenyamanan dan kemewahan dengan desain kontemporer. Ideal untuk wisatawan yang menginginkan pengalaman menginap berkelas dengan fasilitas lengkap.
-                    </p>
-                    <div class="room-features">
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🛏️</span>
-                            <span>Queen/Twin Bed</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">📏</span>
-                            <span>45 m²</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">👥</span>
-                            <span>2 Tamu</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🌳</span>
-                            <span>Garden View</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🛁</span>
-                            <span>Rain Shower</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">📶</span>
-                            <span>High-Speed WiFi</span>
-                        </div>
-                    </div>
-                    <div class="room-price-container">
-                        <div>
-                            <div class="room-price">Rp 4.500.000</div>
-                            <div class="room-price-label">per malam</div>
-                        </div>
-                        <button class="room-cta" onclick="alert('Sistem reservasi akan segera hadir!')">Pesan Sekarang</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Superior Room -->
-            <div class="room-card">
-                <div class="room-image-container">
-                    <div class="room-badge">Best Value</div>
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #565668 0%, #424252 100%);"></div>
-                    <div class="room-image-overlay"></div>
-                </div>
-                <div class="room-content">
-                    <div class="room-category">Kamar Standard</div>
-                    <h2 class="room-name">Superior Room</h2>
-                    <p class="room-description">
-                        Kamar superior yang nyaman dengan sentuhan elegan, menawarkan nilai terbaik untuk pengalaman menginap yang berkualitas. Sempurna untuk liburan keluarga atau perjalanan bisnis singkat.
-                    </p>
-                    <div class="room-features">
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🛏️</span>
-                            <span>Double/Twin Bed</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">📏</span>
-                            <span>35 m²</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">👥</span>
-                            <span>2 Tamu</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">🏙️</span>
-                            <span>Pool View</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">📺</span>
-                            <span>Smart TV 43"</span>
-                        </div>
-                        <div class="room-feature">
-                            <span class="room-feature-icon">☕</span>
-                            <span>Coffee Maker</span>
-                        </div>
-                    </div>
-                    <div class="room-price-container">
-                        <div>
-                            <div class="room-price">Rp 2.800.000</div>
-                            <div class="room-price-label">per malam</div>
-                        </div>
-                        <button class="room-cta" onclick="alert('Sistem reservasi akan segera hadir!')">Pesan Sekarang</button>
-                    </div>
-                </div>
-            </div>
+                @endforeach
         </div>
     </section>
 
@@ -740,6 +599,17 @@
     </footer>
 
     <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
         // Mobile menu toggle
         const mobileToggle = document.getElementById('mobileToggle');
         const navbarMenu = document.getElementById('navbarMenu');
