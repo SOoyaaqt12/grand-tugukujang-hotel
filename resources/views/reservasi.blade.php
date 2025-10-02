@@ -623,7 +623,7 @@
 
                 <div class="total-info" id="totalInfo" style="display: none;">
                     <div class="total-row">
-                        <span class="total-label">Subtotal (Harga × Durasi):</span>
+                        <span class="total-label">Subtotal (Harga × Durasi + Total Breakfast):</span>
                         <span class="total-value" id="subtotalText">Rp 0</span>
                     </div>
                     <div class="total-row" id="diskonRow" style="display: none;">
@@ -631,7 +631,7 @@
                         <span class="total-value" style="color: #4ade80;" id="diskonText">- Rp 0</span>
                     </div>
                     <div class="total-row" id="breakfastRow" style="display: none;">
-                        <span class="total-label">Breakfast:</span>
+                        <span class="total-label">Total Breakfast:</span>
                         <span class="total-value" id="breakfastText">+ Rp 0</span>
                     </div>
                     <div class="total-row">

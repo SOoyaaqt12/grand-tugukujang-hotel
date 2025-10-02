@@ -42,23 +42,24 @@ class Booking extends Model
      */
     public static function hitungTotal($harga, $durasi, $breakfast = false)
     {
-        $subtotal = $harga * $durasi;
-        $diskon = 0;
-        
-        // Diskon 10% untuk menginap lebih dari 3 hari
-        if ($durasi > 3) {
-            $diskon = $subtotal * 0.1;
-        }
-        
-        $afterDiskon = $subtotal - $diskon;
-        
         // Breakfast Rp 80.000 per hari
         $breakfastCost = 0;
         if ($breakfast) {
             $breakfastCost = 80000 * $durasi;
         }
         
-        $total = $afterDiskon + $breakfastCost;
+        $subtotal = $harga * $durasi + $breakfastCost;
+        
+
+        // Diskon 10% untuk menginap lebih dari 3 hari
+        $diskon = 0;
+        if ($durasi > 3) {
+            $diskon = $subtotal * 0.1;
+        }
+        
+        $afterDiskon = $subtotal - $diskon;
+
+        $total = $afterDiskon;
         
         return [
             'subtotal' => $subtotal,
