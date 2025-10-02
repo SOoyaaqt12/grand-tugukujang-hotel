@@ -240,7 +240,7 @@
 
         .room-image-container {
             position: relative;
-            height: 700px;
+            height: 815px;
             overflow: hidden;
             background: linear-gradient(135deg, #2c2c3e 0%, #1a1a2e 100%);
         }

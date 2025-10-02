@@ -493,23 +493,97 @@
             .navbar-menu {
                 position: fixed;
                 top: 70px;
-                left: -100%;
+                left: 0;
                 right: 0;
                 flex-direction: column;
-                background: rgba(10, 10, 10, 0.98);
-                backdrop-filter: blur(10px);
                 padding: 40px 20px;
                 gap: 30px;
-                transition: left 0.4s ease;
                 border-top: 1px solid rgba(212, 175, 55, 0.3);
+
+                background: rgba(10, 10, 10, 0.9);
+                backdrop-filter: blur(10px);
+
+                transform: translateX(-120%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.4s ease, opacity 0.4s ease;
+
+                z-index: 999; /* biar tampil di atas hero */
             }
 
             .navbar-menu.active {
-                left: 0;
+                transform: translateX(0);
+                opacity: 1;
+                pointer-events: auto;
             }
 
             .navbar-logo-text {
                 font-size: 18px;
+            }
+
+            .hero {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-image: url('{{ asset('storage/assets/images/lobby-index.jpg')}}');
+                background-size: cover;       /* gambar menyesuaikan layar */
+                background-position: center;  /* posisi fokus tengah */
+                background-repeat: no-repeat; /* biar gak diulang */
+                background-attachment: fixed;
+                height: 100vh;                /* tinggi penuh layar */
+                overflow: hidden;
+                z-index: 1;
+            }
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                /* Overlay gradasi emas + hitam elegan */
+                background: linear-gradient(
+                    rgba(0, 0, 0, 0.6), 
+                    rgba(0, 0, 0, 0.6)
+                ),
+                radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+                opacity: 0.9;
+                z-index: 0;
+            }
+
+            @keyframes shimmer {
+                0%, 100% { opacity: 0.5; }
+                50% { opacity: 1; }
+            }
+
+            .hero-content {
+                position: relative;
+                z-index: 2;
+                text-align: center;
+                color: #fff;
+                padding: 20px;
+                animation: fadeInUp 1.5s ease-out;
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .logo {
+                width: 400px;
+                height: auto;
+                margin: auto;
+                display: block;
             }
         }
     </style>
