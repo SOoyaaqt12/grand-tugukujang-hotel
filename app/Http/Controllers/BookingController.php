@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,28 +14,24 @@ class BookingController extends Controller
      */
     public function index(Request $request)
     {
-        // Ambil tipe kamar dari query string
-        $tipeKamar = $request->query('tipe');
+        // Ambil room_id dari query string
+        $roomId = $request->query('room_id');
         
-        // Jika tidak ada tipe kamar, redirect ke product page
-        if (!$tipeKamar || !in_array($tipeKamar, ['Standard', 'Deluxe', 'Executive'])) {
-            return redirect('/product')->with('info', 'Silakan pilih kamar terlebih dahulu');
+        // Jika tidak ada room_id, redirect ke product page
+        if (!$roomId) {
+            return redirect('/products')->with('info', 'Silakan pilih kamar terlebih dahulu');
         }
         
-        $harga = Booking::getHargaKamar($tipeKamar);
+        // Ambil data room dari database
+        $room = Products::findOrFail($roomId);
         
-        return view('reservasi', compact('tipeKamar', 'harga'));
-    }
-
-    /**
-     * Get harga kamar via AJAX
-     */
-    public function getHarga(Request $request)
-    {
-        $tipe = $request->get('tipe');
-        $harga = Booking::getHargaKamar($tipe);
+        // Buat object compatibility untuk view lama
+        $room->name = $room->title;
+        $room->category = $room->type;
+        $room->max_guests = $room->capacity;
+        $room->size = '45'; // Default value atau ambil dari database jika ada
         
-        return response()->json(['harga' => $harga]);
+        return view('reservasi', compact('room'));
     }
 
     /**
@@ -57,21 +54,21 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'room_id' => 'required|exists:products,id',
             'nama_pemesan' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'nomor_identitas' => 'required|digits:16',
-            'tipe_kamar' => 'required|in:Standard,Deluxe,Executive',
-            'harga' => 'required|numeric|min:0',
             'tanggal_pesan' => 'required|date|after_or_equal:today',
             'durasi_menginap' => 'required|integer|min:1',
             'breakfast' => 'boolean',
             'total_bayar' => 'required|numeric|min:0',
         ], [
+            'room_id.required' => 'Kamar wajib dipilih',
+            'room_id.exists' => 'Kamar tidak ditemukan',
             'nama_pemesan.required' => 'Nama pemesan wajib diisi',
             'jenis_kelamin.required' => 'Jenis kelamin wajib dipilih',
             'nomor_identitas.required' => 'Nomor identitas wajib diisi',
             'nomor_identitas.digits' => 'Nomor identitas harus 16 digit',
-            'tipe_kamar.required' => 'Tipe kamar wajib dipilih',
             'tanggal_pesan.required' => 'Tanggal pesan wajib diisi',
             'tanggal_pesan.after_or_equal' => 'Tanggal pesan tidak boleh kurang dari hari ini',
             'durasi_menginap.required' => 'Durasi menginap wajib diisi',
@@ -84,19 +81,23 @@ class BookingController extends Controller
                 ->withInput();
         }
 
+        // Ambil data room
+        $room = Products::findOrFail($request->room_id);
+
         // Hitung ulang total untuk validasi
         $calculation = Booking::hitungTotal(
-            $request->harga,
+            $room->price,
             $request->durasi_menginap,
             $request->has('breakfast')
         );
 
         $booking = Booking::create([
+            'product_id' => $room->id,
             'nama_pemesan' => $request->nama_pemesan,
             'jenis_kelamin' => $request->jenis_kelamin,
             'nomor_identitas' => $request->nomor_identitas,
-            'tipe_kamar' => $request->tipe_kamar,
-            'harga' => $request->harga,
+            'tipe_kamar' => $room->type,
+            'harga' => $room->price,
             'tanggal_pesan' => $request->tanggal_pesan,
             'durasi_menginap' => $request->durasi_menginap,
             'breakfast' => $request->has('breakfast'),
@@ -111,10 +112,11 @@ class BookingController extends Controller
     /**
      * Display all bookings (transactions)
      */
-    public function transactions()
+    public function transaksi()
     {
-        $bookings = Booking::orderBy('created_at', 'desc')->paginate(10);
-        return view('transactions', compact('bookings'));
+        $bookings = Booking::with('product')->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('booking.transaksi', compact('bookings'));
     }
 
     /**
@@ -122,6 +124,9 @@ class BookingController extends Controller
      */
     public function sukses()
     {
+        if (!session()->has('success')) {
+            return redirect('/products');
+        }
         return view('booking.sukses');
     }
 

@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('title');
+            $table->string('name');
+            $table->string('category');
             $table->text('description');
-            $table->text('features');
-            $table->integer('capacity');
+            $table->integer('size');
+            $table->integer('max_guests');
             $table->string('main_image');
             $table->bigInteger('price');
+            $table->string('bed_type');
+            $table->string('view_type');
+            $table->json('features');
+            $table->string('badge')->nullable();
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }

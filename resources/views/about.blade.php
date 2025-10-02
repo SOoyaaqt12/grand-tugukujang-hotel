@@ -652,6 +652,7 @@
             <li><a href="/about">About</a></li>
             <li><a href="/products">Product</a></li>
             <li><a href="/price">Price</a></li>
+            <li><a href="/transaksi">Transaksi</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">

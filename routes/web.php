@@ -16,13 +16,18 @@ Route::resource('/products', ProductController::class);
 
 Route::get('/price', [ProductController::class, 'price'])->name('price');
 
-// Booking routes
+// Product/Rooms routes
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+// Booking/Reservation routes
 Route::get('/reservasi', [BookingController::class, 'index'])->name('booking.index');
 Route::post('/reservasi', [BookingController::class, 'store'])->name('booking.store');
-Route::get('/booking/sukses', [BookingController::class, 'sukses'])->name('booking.sukses');
-Route::get('/booking/transaksi', [BookingController::class, 'transaksi'])->name('booking.transaksi');
+Route::post('/booking/hitung-total', [BookingController::class, 'hitungTotal'])->name('booking.hitung');
+
+// Transaction routes
+Route::get('/transaksi', [BookingController::class, 'transaksi'])->name('booking.transaksi');
 Route::delete('/booking/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
 
-// AJAX routes for booking
-Route::get('/booking/get-harga', [BookingController::class, 'getHarga'])->name('booking.getHarga');
-Route::post('/booking/hitung-total', [BookingController::class, 'hitungTotal'])->name('booking.hitungTotal');
+// Success page
+Route::get('/booking-sukses', [BookingController::class, 'sukses'])->name('booking.sukses');

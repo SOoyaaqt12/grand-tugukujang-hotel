@@ -532,6 +532,7 @@
             <li><a href="/about">About</a></li>
             <li><a href="/products">Product</a></li>
             <li><a href="/price">Price</a></li>
+            <li><a href="/transaksi">Transaksi</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">
@@ -565,19 +566,19 @@
                         <div class="room-image-overlay"></div>
                     </div>
                     <div class="room-content">
-                        <div class="room-category">{{$product->type}}</div>
-                        <h2 class="room-name">{{$product->title}}</h2>
+                        <div class="room-category">{{$product->category}}</div>
+                        <h2 class="room-name">{{$product->name}}</h2>
                         <p class="room-description">
                             {{$product->description}}
                         </p>
                         <div class="room-features">
-                            @foreach ( explode(',',$product->features) as $feature )
+                            @foreach ($product->features as $feature)
                                 <div class="room-feature">
                                     <span class="room-feature-icon">⁜</span>
                                     <span>{{trim($feature)}}</span>
                                 </div>
                             @endforeach
-                            <h3 class="room-description">Kapasitas {{$product->capacity}} Tamu</h3>
+                            <h3 class="room-description">Kapasitas {{$product->max_guests}} Tamu</h3>
                         </div>
                         <div class="room-price-container">
                             <div>

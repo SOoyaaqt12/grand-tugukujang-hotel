@@ -410,6 +410,28 @@
             letter-spacing: 2px;
         }
 
+        .room-info-card {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .room-info-title {
+            font-size: 20px;
+            color: #d4af37;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .room-info-text {
+            color: #f4e5b0;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
         .footer {
             background: #0a0a0a;
             padding: 40px 20px;
@@ -486,8 +508,9 @@
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/product">Product</a></li>
+            <li><a href="/products">Product</a></li>
             <li><a href="/price">Price</a></li>
+            <li><a href="/transaksi">Transaksi</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">
@@ -518,8 +541,19 @@
                 </div>
             @endif
 
+            <!-- Room Info Card -->
+            <div class="room-info-card">
+                <h3 class="room-info-title">Kamar yang Dipilih</h3>
+                <p class="room-info-text">
+                    <strong>{{ $room->name }}</strong> - {{ $room->category }}<br>
+                    Harga: <strong style="color: #d4af37;">Rp {{ number_format($room->price, 0, ',', '.') }}</strong> per malam<br>
+                    Kapasitas: {{ $room->max_guests }} tamu | Ukuran: {{ $room->size }} m²
+                </p>
+            </div>
+
             <form action="{{ route('booking.store') }}" method="POST" id="bookingForm">
                 @csrf
+                <input type="hidden" name="room_id" value="{{ $room->id }}">
 
                 <div class="form-group">
                     <label class="form-label">Nama Pemesan <span class="required">*</span></label>
@@ -556,25 +590,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Tipe Kamar <span class="required">*</span></label>
-                    <input type="text" id="tipe_kamar_display" class="form-input" value="{{ old('tipe_kamar', $tipeKamar) }}" readonly style="background: rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.4); color: #d4af37; font-weight: bold;">
-                    <input type="hidden" name="tipe_kamar" id="tipe_kamar" value="{{ old('tipe_kamar', $tipeKamar) }}">
-                    <small style="color: #888; font-size: 14px; display: block; margin-top: 8px;">
-                        Tipe kamar dipilih dari halaman produk. 
-                        <a href="/products" style="color: #d4af37; text-decoration: underline;">Ubah pilihan kamar</a>
-                    </small>
-                    @error('tipe_kamar')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Harga per Malam</label>
-                    <input type="text" name="harga" id="harga" class="form-input" value="{{ old('harga', $harga) }}" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Tanggal Pesan <span class="required">*</span></label>
+                    <label class="form-label">Tanggal Check-in <span class="required">*</span></label>
                     <input type="date" name="tanggal_pesan" class="form-input" value="{{ old('tanggal_pesan', date('Y-m-d')) }}" min="{{ date('Y-m-d') }}" required>
                     @error('tanggal_pesan')
                         <span class="error-message">{{ $message }}</span>
@@ -627,7 +643,7 @@
                 <input type="hidden" name="total_bayar" id="total_bayar" value="{{ old('total_bayar', 0) }}">
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-danger" onclick="window.location.href='/'">Batal</button>
+                    <button type="button" class="btn btn-danger" onclick="window.location.href='/products'">Batal</button>
                     <button type="submit" class="btn btn-primary" id="btnSimpan">Simpan Pemesanan</button>
                 </div>
             </form>
@@ -640,7 +656,6 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
         const mobileToggle = document.getElementById('mobileToggle');
         const navbarMenu = document.getElementById('navbarMenu');
 
@@ -656,24 +671,10 @@
             });
         });
 
-        // Format rupiah
         function formatRupiah(angka) {
             return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        // Update harga saat tipe kamar berubah
-        document.getElementById('tipe_kamar').addEventListener('change', function() {
-            const tipe = this.value;
-            fetch('/booking/get-harga?tipe=' + tipe)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('harga').value = data.harga;
-                    // Reset total info
-                    document.getElementById('totalInfo').style.display = 'none';
-                });
-        });
-
-        // Validasi nomor identitas
         document.querySelector('input[name="nomor_identitas"]').addEventListener('input', function(e) {
             this.value = this.value.replace(/\D/g, '');
             if (this.value.length > 16) {
@@ -681,9 +682,8 @@
             }
         });
 
-        // Hitung total bayar
         document.getElementById('btnHitung').addEventListener('click', function() {
-            const harga = parseFloat(document.getElementById('harga').value) || 0;
+            const harga = {{ $room->price }};
             const durasi = parseInt(document.getElementById('durasi_menginap').value) || 1;
             const breakfast = document.getElementById('breakfast').checked;
 
@@ -692,7 +692,7 @@
                 return;
             }
 
-            fetch('/booking/hitung-total', {
+            fetch('{{ route("booking.hitung") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -706,7 +706,6 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Update tampilan
                 document.getElementById('subtotalText').textContent = formatRupiah(data.subtotal);
                 
                 if (data.diskon > 0) {
@@ -733,7 +732,6 @@
             });
         });
 
-        // Validasi form sebelum submit
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
             const totalBayar = parseFloat(document.getElementById('total_bayar').value);
             
@@ -756,7 +754,6 @@
             }
         });
 
-        // Auto calculate when values change
         ['durasi_menginap', 'breakfast'].forEach(id => {
             const element = document.getElementById(id);
             if (element) {
@@ -770,4 +767,3 @@
     </script>
 </body>
 </html>
-                    

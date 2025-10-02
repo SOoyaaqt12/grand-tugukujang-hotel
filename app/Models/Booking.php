@@ -9,84 +9,62 @@ class Booking extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
+        'product_id',
         'nama_pemesan',
         'jenis_kelamin',
         'nomor_identitas',
-        'tipe_kamar',
-        'harga',
         'tanggal_pesan',
         'durasi_menginap',
         'breakfast',
         'diskon',
-        'total_bayar',
+        'total_bayar'
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'tanggal_pesan' => 'date',
         'breakfast' => 'boolean',
-        'harga' => 'decimal:2',
-        'diskon' => 'decimal:2',
-        'total_bayar' => 'decimal:2',
+        'durasi_menginap' => 'integer',
+        'diskon' => 'decimal:0',
+        'total_bayar' => 'decimal:0'
     ];
 
     /**
-     * Get harga kamar berdasarkan tipe
-     *
-     * @param string $tipe
-     * @return float
+     * Relasi ke Products
      */
-    public static function getHargaKamar($tipe)
+    public function product()
     {
-        $harga = [
-            'Standard' => 2800000,
-            'Deluxe' => 4500000,
-            'Executive' => 8500000,
-        ];
-
-        return $harga[$tipe] ?? 0;
+        return $this->belongsTo(Products::class, 'product_id');
     }
 
     /**
      * Hitung total bayar dengan diskon dan breakfast
-     *
-     * @param float $harga
-     * @param int $durasi
-     * @param bool $breakfast
-     * @return array
      */
-    public static function hitungTotal($harga, $durasi, $breakfast)
+    public static function hitungTotal($harga, $durasi, $breakfast = false)
     {
         $subtotal = $harga * $durasi;
         $diskon = 0;
         
-        // Diskon 10% jika durasi > 3 hari
+        // Diskon 10% untuk menginap lebih dari 3 hari
         if ($durasi > 3) {
-            $diskon = $subtotal * 0.10;
+            $diskon = $subtotal * 0.1;
         }
         
-        $total = $subtotal - $diskon;
+        $afterDiskon = $subtotal - $diskon;
         
-        // Tambahan breakfast Rp 80.000 per hari
+        // Breakfast Rp 80.000 per hari
+        $breakfastCost = 0;
         if ($breakfast) {
-            $total += (80000 * $durasi);
+            $breakfastCost = 80000 * $durasi;
         }
+        
+        $total = $afterDiskon + $breakfastCost;
         
         return [
             'subtotal' => $subtotal,
             'diskon' => $diskon,
-            'breakfast_cost' => $breakfast ? (80000 * $durasi) : 0,
-            'total' => $total,
+            'breakfast_cost' => $breakfastCost,
+            'total' => $total
         ];
     }
 }

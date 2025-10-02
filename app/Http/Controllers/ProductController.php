@@ -44,6 +44,12 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Products::with('images')->findOrFail($id);
+        
+        // Pastikan features tidak null
+        if (empty($product->features)) {
+            $product->features = '';
+        }
+        
         return view('products.show', compact('product'));
     }
 

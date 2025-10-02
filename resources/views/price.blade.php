@@ -520,8 +520,9 @@
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/rooms">Product</a></li>
+            <li><a href="/products">Product</a></li>
             <li><a href="/price">Price</a></li>
+            <li><a href="/transaksi">Transaksi</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">
@@ -568,7 +569,7 @@
                             <td>
                                 <div class="room-type-cell">
                                     <span class="room-name">{{ $product->title }}</span>
-                                    <span class="room-category">{{ $product->type }}</span>
+                                    <span class="room-category">{{ $product->category }}</span>
                                 </div>
                             </td>
                             <td>

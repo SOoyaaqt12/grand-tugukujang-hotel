@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $product->title }} - Grand Tugu Kujang Hotel</title>
+    <title>{{ $product->name }} - Grand Tugu Kujang Hotel</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,6 @@
             background: #0a0a0a;
         }
 
-        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -126,7 +125,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Hero Section */
         .hero-detail {
             height: 100vh;
             position: relative;
@@ -210,7 +208,6 @@
             margin: 30px auto;
         }
 
-        /* Main Content */
         .detail-section {
             background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
             padding: 100px 20px;
@@ -221,7 +218,6 @@
             margin: 0 auto;
         }
 
-        /* Image Gallery */
         .gallery-section {
             margin-bottom: 80px;
         }
@@ -234,6 +230,7 @@
             margin-bottom: 20px;
             position: relative;
             border: 1px solid rgba(212, 175, 55, 0.2);
+            background: linear-gradient(135deg, #2c2c3e 0%, #1a1a2e 100%);
         }
 
         .main-image {
@@ -242,37 +239,6 @@
             object-fit: cover;
         }
 
-        .thumbnail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .thumbnail {
-            height: 150px;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .thumbnail:hover {
-            border-color: #d4af37;
-            transform: scale(1.05);
-        }
-
-        .thumbnail.active {
-            border-color: #d4af37;
-        }
-
-        .thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Info Grid */
         .info-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -329,7 +295,6 @@
             color: #f4e5b0;
         }
 
-        /* Booking Card */
         .booking-card {
             background: rgba(26, 26, 46, 0.6);
             padding: 40px;
@@ -452,7 +417,6 @@
             color: #0a0a0a;
         }
 
-        /* Footer */
         .footer {
             background: #0a0a0a;
             padding: 40px 20px;
@@ -461,7 +425,6 @@
             border-top: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        /* Responsive */
         @media (max-width: 968px) {
             .info-grid {
                 grid-template-columns: 1fr;
@@ -478,10 +441,6 @@
 
             .hero-title {
                 font-size: 42px;
-            }
-
-            .thumbnail-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
 
             .features-grid {
@@ -560,7 +519,6 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar" id="navbar">
         <a href="/" class="navbar-logo">
             <img src="{{asset('storage/assets/images/logo.png')}}" class="navbar-logo-icon"/>
@@ -572,6 +530,7 @@
             <li><a href="/about">About</a></li>
             <li><a href="/products">Product</a></li>
             <li><a href="/price">Price</a></li>
+            <li><a href="/transaksi">Transaksi</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">
@@ -581,46 +540,29 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero-detail">
         <div class="hero-content">
             <div class="breadcrumb">
-                <a href="/">Home</a> / <a href="/rooms">Kamar & Suite</a> / {{ $product->title }}
+                <a href="/">Home</a> / <a href="/products">Kamar & Suite</a> / {{ $product->name }}
             </div>
-            <h1 class="hero-title">{{ $product->title }}</h1>
+            <h1 class="hero-title">{{ $product->name }}</h1>
             <div class="decorative-line"></div>
-            <p class="hero-subtitle">{{ $product->type }}</p>
+            <p class="hero-subtitle">{{ $product->category }}</p>
         </div>
     </section>
 
-    <!-- Detail Section -->
     <section class="detail-section">
         <div class="detail-container">
-            <a href="/rooms" class="back-button">
+            <a href="/products" class="back-button">
                 ← Kembali ke Daftar Kamar
             </a>
 
-            <!-- Image Gallery -->
             <div class="gallery-section">
                 <div class="main-image-container">
-                    <img src="{{ asset($product->main_image) }}" alt="{{ $product->title }}" class="main-image" id="mainImage">
+                    <img src="{{ asset($product->main_image) }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
                 </div>
-                
-                @if($product->images && $product->images->count() > 0)
-                <div class="thumbnail-grid">
-                    <div class="thumbnail active" onclick="changeImage('{{ asset($product->main_image) }}', this)">
-                        <img src="{{ asset($product->main_image) }}" alt="Main">
-                    </div>
-                    @foreach($product->images as $image)
-                    <div class="thumbnail" onclick="changeImage('{{ asset($image->image) }}', this)">
-                        <img src="{{ asset($image->image) }}" alt="Gallery {{ $loop->iteration }}">
-                    </div>
-                    @endforeach
-                </div>
-                @endif
             </div>
 
-            <!-- Info Grid -->
             <div class="info-grid">
                 <div class="info-content">
                     <h2 class="section-title">Deskripsi Kamar</h2>
@@ -629,8 +571,8 @@
 
                     <h3 class="section-title" style="font-size: 28px; margin-top: 40px;">Fasilitas</h3>
                     <div class="decorative-line" style="margin: 20px 0;"></div>
-                    <div class="features-grid">
-                        @foreach(explode(',', $product->features) as $feature)
+                    <div class="features-grid">                       
+                        @foreach($product->features as $feature)
                         <div class="feature-item">
                             <span class="feature-icon">✓</span>
                             <span class="feature-text">{{ trim($feature) }}</span>
@@ -649,36 +591,38 @@
                     <div class="booking-info">
                         <div class="info-item">
                             <span class="info-label">Tipe Kamar</span>
-                            <span class="info-value">{{ $product->type }}</span>
+                            <span class="info-value">{{ $product->category }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Ukuran</span>
+                            <span class="info-value">{{ $product->size }} m²</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Kapasitas</span>
-                            <span class="info-value">{{ $product->capacity }} Tamu</span>
+                            <span class="info-value">{{ $product->max_guests }} Tamu</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Check-in</span>
-                            <span class="info-value">14:00</span>
+                            <span class="info-label">Tipe Kasur</span>
+                            <span class="info-value">{{ $product->bed_type }}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Check-out</span>
-                            <span class="info-value">12:00</span>
+                            <span class="info-label">Pemandangan</span>
+                            <span class="info-value">{{ $product->view_type }}</span>
                         </div>
                     </div>
 
-                    <a href="/reservasi" class="cta-button">Reservasi Sekarang</a>
+                    <a href="/reservasi?room_id={{ $product->id }}" class="cta-button">Reservasi Sekarang</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2025 Grand Tugu Kujang Hotel. All Rights Reserved.</p>
         <p style="margin-top: 10px;">Designed with Excellence & Luxury</p>
     </footer>
 
     <script>
-        // Navbar scroll effect
         const navbar = document.getElementById('navbar');
 
         window.addEventListener('scroll', () => {
@@ -689,7 +633,6 @@
             }
         });
 
-        // Mobile menu toggle
         const mobileToggle = document.getElementById('mobileToggle');
         const navbarMenu = document.getElementById('navbarMenu');
 
@@ -705,20 +648,6 @@
             });
         });
 
-        // Change main image
-        function changeImage(src, element) {
-            document.getElementById('mainImage').src = src;
-            
-            // Remove active class from all thumbnails
-            document.querySelectorAll('.thumbnail').forEach(thumb => {
-                thumb.classList.remove('active');
-            });
-            
-            // Add active class to clicked thumbnail
-            element.classList.add('active');
-        }
-
-        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();

@@ -2,20 +2,38 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Products extends Model
 {
-    protected $table = 'products';
+    use HasFactory;
+
     protected $fillable = [
-        'type',
-        'title',
+        'name',
+        'category',
         'description',
-        'features',
-        'capacity',
-        'main_image',
         'price',
+        'size',
+        'max_guests',
+        'bed_type',
+        'view_type',
+        'features',
+        'main_image',
+        'badge',
+        'is_available'
     ];
+
+    protected $casts = [
+        'features' => 'array',
+        'is_available' => 'boolean',
+        'price' => 'decimal:0'
+    ];
+
+    public function bookings()
+    {
+        return $this->hasMany(Products::class, 'product_id');
+    }
 
     public function images()
     {

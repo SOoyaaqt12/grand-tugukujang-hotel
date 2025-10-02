@@ -191,7 +191,7 @@
         }
 
         .transactions-container {
-            max-width: 1400px;
+            max-width: 1700px;
             margin: 0 auto;
         }
 
@@ -443,9 +443,9 @@
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/product">Product</a></li>
+            <li><a href="/products">Product</a></li>
             <li><a href="/price">Price</a></li>
-            <li><a href="/reservation">Reservation</a></li>
+            <li><a href="/transaksi">Transaksi</a></li>
         </ul>
 
         <div class="mobile-toggle" id="mobileToggle">
@@ -485,7 +485,7 @@
                                 <th>Nama Pemesan</th>
                                 <th>Jenis Kelamin</th>
                                 <th>No. Identitas</th>
-                                <th>Tipe Kamar</th>
+                                <th>Nama Kamar</th>
                                 <th>Tanggal Pesan</th>
                                 <th>Durasi</th>
                                 <th>Breakfast</th>
@@ -499,8 +499,7 @@
                                 <td>{{ ($bookings->currentPage() - 1) * $bookings->perPage() + $index + 1 }}</td>
                                 <td>{{ $booking->nama_pemesan }}</td>
                                 <td>{{ $booking->jenis_kelamin }}</td>
-                                <td>{{ $booking->nomor_identitas }}</td>
-                                <td>{{ $booking->tipe_kamar }}</td>
+                                <td>{{ $booking->nomor_identitas }}</td><td><strong>{{ $booking->product->name ?? 'Tidak ada data' }}</strong></td>
                                 <td>{{ $booking->tanggal_pesan->format('d/m/Y') }}</td>
                                 <td>{{ $booking->durasi_menginap }} hari</td>
                                 <td>
@@ -510,7 +509,7 @@
                                         <span class="badge badge-no">✗ Tidak</span>
                                     @endif
                                 </td>
-                                <td style="color: #d4af37; font-weight: bold;">Rp {{ number_format($booking->total_bayar, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($booking->product->price, 0, ',', '.') }}</td>
                                 <td>
                                     <form action="{{ route('booking.destroy', $booking->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus booking ini?')">
                                         @csrf
