@@ -584,19 +584,28 @@
             .navbar-menu {
                 position: fixed;
                 top: 70px;
-                left: -100%;
+                left: 0;
                 right: 0;
                 flex-direction: column;
-                background: rgba(10, 10, 10, 0.98);
-                backdrop-filter: blur(10px);
                 padding: 40px 20px;
                 gap: 30px;
-                transition: left 0.4s ease;
                 border-top: 1px solid rgba(212, 175, 55, 0.3);
+
+                background: rgba(10, 10, 10, 0.9);
+                backdrop-filter: blur(10px);
+
+                transform: translateX(-120%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.4s ease, opacity 0.4s ease;
+
+                z-index: 999; /* biar tampil di atas hero */
             }
 
             .navbar-menu.active {
-                left: 0;
+                transform: translateX(0);
+                opacity: 1;
+                pointer-events: auto;
             }
 
             .navbar-logo-text {

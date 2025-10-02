@@ -397,8 +397,6 @@
 
         .navbar.scrolled .navbar-logo-icon {
             width: 60px;
-            height: auto;
-            font-size: 20px;
         }
 
         .navbar-logo-text {
