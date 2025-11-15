@@ -43,7 +43,7 @@
             bottom: 0;
             /* Overlay gradasi emas + hitam elegan */
             background: linear-gradient(
-                rgba(0, 0, 0, 0.6), 
+                rgba(0, 0, 0, 0.6),
                 rgba(0, 0, 0, 0.6)
             ),
             radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
@@ -335,11 +335,9 @@
                 font-size: 42px;
                 letter-spacing: 4px;
             }
-            
             .subtitle {
                 font-size: 18px;
             }
-            
             .gallery-grid {
                 grid-template-columns: 1fr;
             }
@@ -545,7 +543,7 @@
                 bottom: 0;
                 /* Overlay gradasi emas + hitam elegan */
                 background: linear-gradient(
-                    rgba(0, 0, 0, 0.6), 
+                    rgba(0, 0, 0, 0.6),
                     rgba(0, 0, 0, 0.6)
                 ),
                 radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
@@ -594,7 +592,7 @@
             <img class="navbar-logo-icon" src="{{ asset('storage/assets/images/logo.png')}}"/>
             <span class="navbar-logo-text">GRAND TUGU KUJANG</span>
         </a>
-        
+
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
@@ -615,7 +613,7 @@
             <h1 class="title-logo">Grand Tugu Kujang</h1>
             <p class="subtitle">Where Luxury Meets Elegance</p>
             <div class="decorative-line"></div>
-            <button class="cta-button" onclick="window.location.href='/products'">Cek Kamar</button>   
+            <button class="cta-button" onclick="window.location.href='/products'">Cek Kamar</button>
         </div>
     </section>
 
