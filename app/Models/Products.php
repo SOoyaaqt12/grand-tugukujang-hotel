@@ -20,6 +20,7 @@ class Products extends Model
         'view_type',
         'features',
         'main_image',
+        'video_url',
         'badge',
         'is_available'
     ];

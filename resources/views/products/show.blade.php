@@ -417,6 +417,50 @@
             color: #0a0a0a;
         }
 
+        /* VIDEO SECTION - TAMBAHAN BARU */
+        .video-section {
+            margin-top: 80px;
+            background: rgba(26, 26, 46, 0.6);
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+
+        .video-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5b0 100%);
+            color: #0a0a0a;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
         .footer {
             background: #0a0a0a;
             padding: 40px 20px;
@@ -445,6 +489,14 @@
 
             .features-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .video-section {
+                padding: 30px 20px;
+            }
+
+            .video-container {
+                padding-bottom: 75%;
             }
         }
 
@@ -524,7 +576,7 @@
             <img src="{{asset('storage/assets/images/logo.png')}}" class="navbar-logo-icon"/>
             <span class="navbar-logo-text">GRAND TUGU KUJANG</span>
         </a>
-        
+
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
@@ -571,7 +623,7 @@
 
                     <h3 class="section-title" style="font-size: 28px; margin-top: 40px;">Fasilitas</h3>
                     <div class="decorative-line" style="margin: 20px 0;"></div>
-                    <div class="features-grid">                       
+                    <div class="features-grid">
                         @foreach($product->features as $feature)
                         <div class="feature-item">
                             <span class="feature-icon">✓</span>
@@ -614,6 +666,32 @@
                     <a href="/reservasi?room_id={{ $product->id }}" class="cta-button">Reservasi Sekarang</a>
                 </div>
             </div>
+
+            {{-- VIDEO SECTION - SECTION BARU --}}
+            @if($product->video_url)
+            <div class="video-section">
+                <span class="video-badge">🎬 Video Tour</span>
+                <h2 class="section-title">Lihat Virtual Tour Kamar</h2>
+                <div class="decorative-line" style="margin: 20px 0;"></div>
+
+                <div class="video-container">
+                    <iframe
+                        src="{{ asset($product->video_url) }}?autoplay=1&loop=1&playlist={{ $product->id }}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        loading="lazy"
+                        autoplay
+                        loop>
+                    </iframe>
+                </div>
+
+                <p class="description-text" style="margin-top: 30px; text-align: center;">
+                    Jelajahi setiap sudut kamar secara virtual dan rasakan pengalaman menginap yang akan Anda dapatkan.
+                </p>
+            </div>
+            @endif
+
         </div>
     </section>
 
