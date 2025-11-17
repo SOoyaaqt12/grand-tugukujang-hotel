@@ -20,6 +20,9 @@ Route::get('/price', [ProductController::class, 'price'])->name('price');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
+// API routes
+Route::get('/api/kamar', [ProductController::class, 'getKamar']);
+
 // Booking/Reservation routes
 Route::get('/reservasi', [BookingController::class, 'index'])->name('booking.index');
 Route::post('/reservasi', [BookingController::class, 'store'])->name('booking.store');

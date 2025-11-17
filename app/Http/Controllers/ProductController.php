@@ -76,4 +76,26 @@ class ProductController extends Controller
     {
         //
     }
+
+    /**
+     * Get all kamar for API
+     */
+    public function getKamar()
+    {
+        try {
+            $kamar = Products::select('id', 'name', 'category', 'price')->get();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Data kamar berhasil diambil',
+                'data' => $kamar,
+                'count' => $kamar->count()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data kamar: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
