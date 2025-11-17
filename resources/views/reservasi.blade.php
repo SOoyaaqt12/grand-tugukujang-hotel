@@ -764,6 +764,42 @@
                 });
             }
         });
+        
+        document.querySelector('input[name="nomor_identitas"]').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 16) {
+                this.value = this.value.slice(0, 16);
+            }
+        });
+
+        // Validasi input durasi menginap - hanya angka
+        const durasiInput = document.getElementById('durasi_menginap');
+        
+        durasiInput.addEventListener('keypress', function(e) {
+            // Hanya izinkan angka (0-9)
+            const char = String.fromCharCode(e.which);
+            if (!/[0-9]/.test(char)) {
+                e.preventDefault();
+                alert('Durasi menginap hanya boleh diisi dengan angka!');
+            }
+        });
+
+        durasiInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+            
+            if (!/^\d+$/.test(pastedText)) {
+                alert('Durasi menginap hanya boleh diisi dengan angka!');
+                return;
+            }
+            
+            this.value = pastedText;
+        });
+
+        durasiInput.addEventListener('input', function(e) {
+            // Hapus karakter non-angka jika ada
+            this.value = this.value.replace(/\D/g, '');
+        });
     </script>
 </body>
 </html>
