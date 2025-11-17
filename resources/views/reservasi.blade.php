@@ -882,6 +882,10 @@
             // Hapus karakter non-angka jika ada
             this.value = this.value.replace(/[^0-9]/g, '');
         });
+
+        document.querySelector('input[name="nama_pemesan"]').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        });
     </script>
 </body>
 </html>
