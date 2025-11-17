@@ -12,9 +12,9 @@ class ProductSeeder extends Seeder
     {
         $rooms = [
             [
-                'name' => 'Family Suite',
-                'category' => 'Suite Keluarga',
-                'description' => 'Rasakan sensasi kekeluargaan di Family Suite kami yang menampilkan desain interior eksklusif, ruang tamu pribadi, dan pemandangan kota yang menakjubkan. Dilengkapi dengan fasilitas premium untuk pengalaman menginap yang tak terlupakan.',
+                'name' => 'Executive Suite',
+                'category' => 'Suite eksekutif',
+                'description' => 'Rasakan sensasi kekeluargaan di executive Suite kami yang menampilkan desain interior eksklusif, ruang tamu pribadi, dan pemandangan kota yang menakjubkan. Dilengkapi dengan fasilitas premium untuk pengalaman menginap yang tak terlupakan.',
                 'price' => 15000000,
                 'size' => 120,
                 'max_guests' => 10,
@@ -22,7 +22,7 @@ class ProductSeeder extends Seeder
                 'view_type' => 'City View',
                 'features' => ['5 King Size Bed', '120 m²', 'Jacuzzi Premium', 'Private Lounge', 'City View', 'Mini Bar'],
                 'main_image' => 'storage/assets/images/family.jpg',
-                'video_url' => "storage/assets/videos/family.mp4",
+                'video_url' => "storage/assets/videos/excutive.mp4",
                 'badge' => 'Terpopuler',
                 'is_available' => true
             ],
