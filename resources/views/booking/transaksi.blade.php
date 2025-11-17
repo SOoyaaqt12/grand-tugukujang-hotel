@@ -191,7 +191,7 @@
         }
 
         .transactions-container {
-            max-width: 1700px;
+            max-width: 1800px;
             margin: 0 auto;
         }
 
@@ -249,9 +249,22 @@
             background: linear-gradient(135deg, #d4af37 0%, #f4e5b0 50%, #d4af37 100%);
             color: #0a0a0a;
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            padding: 8px 20px;
+            font-size: 14px;
         }
 
         .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5b0 50%, #d4af37 100%);
+            color: #0a0a0a;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-add:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
         }
@@ -362,6 +375,12 @@
             border-color: #d4af37;
         }
 
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         .footer {
             background: #0a0a0a;
             padding: 40px 20px;
@@ -417,6 +436,10 @@
             th, td {
                 padding: 12px 8px;
                 font-size: 14px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
             }
         }
 
@@ -474,7 +497,7 @@
             <div class="table-container">
                 <div class="table-header">
                     <h2 class="table-title">Daftar Booking</h2>
-                    <a href="{{ route('booking.index') }}" class="btn btn-primary">+ Tambah Booking</a>
+                    <a href="{{ route('booking.index') }}" class="btn btn-add">+ Tambah Booking</a>
                 </div>
 
                 @if($bookings->count() > 0)
@@ -499,7 +522,8 @@
                                 <td>{{ ($bookings->currentPage() - 1) * $bookings->perPage() + $index + 1 }}</td>
                                 <td>{{ $booking->nama_pemesan }}</td>
                                 <td>{{ $booking->jenis_kelamin }}</td>
-                                <td>{{ $booking->nomor_identitas }}</td><td><strong>{{ $booking->product->name ?? 'Tidak ada data' }}</strong></td>
+                                <td>{{ $booking->nomor_identitas }}</td>
+                                <td><strong>{{ $booking->product->name ?? 'Tidak ada data' }}</strong></td>
                                 <td>{{ $booking->tanggal_pesan->format('d/m/Y') }}</td>
                                 <td>{{ $booking->durasi_menginap }} hari</td>
                                 <td>
@@ -511,11 +535,16 @@
                                 </td>
                                 <td>Rp {{ number_format($booking->total_bayar, 0, ',', '.') }}</td>
                                 <td>
-                                    <form action="{{ route('booking.destroy', $booking->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus booking ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                    </form>
+                                    <div class="action-buttons">
+                                        <a href="{{ route('booking.sukses', $booking->id) }}" class="btn btn-primary">
+                                            Detail
+                                        </a>
+                                        <form action="{{ route('booking.destroy', $booking->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus booking ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
@@ -529,7 +558,7 @@
                     <div class="empty-state">
                         <div class="empty-icon">📋</div>
                         <div class="empty-text">Belum ada data pemesanan</div>
-                        <a href="{{ route('booking.index') }}" class="btn btn-primary">Buat Pemesanan Pertama</a>
+                        <a href="{{ route('booking.index') }}" class="btn btn-add">Buat Pemesanan Pertama</a>
                     </div>
                 @endif
             </div>

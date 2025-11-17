@@ -438,14 +438,6 @@
                 </div>
             </div>
 
-            <!-- Information Box -->
-            <div class="info-box">
-                <p>📧 <strong>Konfirmasi pemesanan</strong> telah dikirim ke email Anda</p>
-                <p>📱 Tim kami akan <strong>menghubungi Anda</strong> dalam 1×24 jam</p>
-                <p>🏨 Tunjukkan <strong>nomor booking</strong> saat check-in</p>
-                <p>💳 Pembayaran dapat dilakukan saat <strong>check-in di hotel</strong></p>
-            </div>
-
             <!-- Action Buttons -->
             <div class="button-group">
                 <a href="{{ route('booking.transaksi') }}" class="btn btn-secondary">Lihat Semua Transaksi</a>

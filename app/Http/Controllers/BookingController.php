@@ -96,8 +96,6 @@ class BookingController extends Controller
             'nama_pemesan' => $request->nama_pemesan,
             'jenis_kelamin' => $request->jenis_kelamin,
             'nomor_identitas' => $request->nomor_identitas,
-            'tipe_kamar' => $room->type,
-            'harga' => $room->price,
             'tanggal_pesan' => $request->tanggal_pesan,
             'durasi_menginap' => $request->durasi_menginap,
             'breakfast' => $request->has('breakfast'),
@@ -105,8 +103,8 @@ class BookingController extends Controller
             'total_bayar' => $calculation['total'],
         ]);
 
-        return redirect()->route('booking.sukses')
-            ->with('success', 'Pemesanan berhasil! Nomor booking: ' . $booking->id);
+        // PERBAIKAN: Kirim ID ke route sukses
+        return redirect()->route('booking.sukses', ['id' => $booking->id]);
     }
 
     /**
