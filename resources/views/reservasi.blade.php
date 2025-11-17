@@ -541,19 +541,9 @@
                 </div>
             @endif
 
-            <!-- Room Info Card -->
-            <div class="room-info-card">
-                <h3 class="room-info-title">Kamar yang Dipilih</h3>
-                <p class="room-info-text">
-                    <strong>{{ $room->name }}</strong> - {{ $room->category }}<br>
-                    Harga: <strong style="color: #d4af37;">Rp {{ number_format($room->price, 0, ',', '.') }}</strong> per malam<br>
-                    Kapasitas: {{ $room->max_guests }} tamu | Ukuran: {{ $room->size }} m²
-                </p>
-            </div>
-
             <form action="{{ route('booking.store') }}" method="POST" id="bookingForm">
                 @csrf
-                <input type="hidden" name="room_id" value="{{ $room->id }}">
+                <input type="hidden" name="room_id" id="room_id" value="">
 
                 <div class="form-group">
                     <label class="form-label">Nama Pemesan <span class="required">*</span></label>
@@ -590,6 +580,21 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label">Tipe Kamar <span class="required">*</span></label>
+                    <select name="tipe_kamar" id="tipe_kamar" class="form-select" required>
+                        <option value="">-- Pilih Tipe Kamar --</option>
+                    </select>
+                    @error('tipe_kamar')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Harga Kamar</label>
+                    <input type="text" name="harga_kamar" id="harga_kamar" class="form-input" value="{{ old('harga_kamar') }}" readonly>
+                </div>
+
+                <div class="form-group">
                     <label class="form-label">Tanggal Check-in <span class="required">*</span></label>
                     <input type="date" name="tanggal_pesan" class="form-input" value="{{ old('tanggal_pesan', date('Y-m-d')) }}" min="{{ date('Y-m-d') }}" required>
                     @error('tanggal_pesan')
@@ -599,8 +604,9 @@
 
                 <div class="form-group">
                     <label class="form-label">Durasi Menginap (Hari) <span class="required">*</span></label>
-                    <input type="number" name="durasi_menginap" id="durasi_menginap" class="form-input" value="{{ old('durasi_menginap', 1) }}" min="1" required>
+                    <input type="text" name="durasi_menginap" id="durasi_menginap" class="form-input" value="{{ old('durasi_menginap', 1) }}" inputmode="numeric" required>
                     <small style="color: #888; font-size: 14px; display: block; margin-top: 8px;">Diskon 10% untuk menginap lebih dari 3 hari</small>
+                    <span class="error-message" id="durasiError" style="display: none;">Harus diisi dengan angka</span>
                     @error('durasi_menginap')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -683,9 +689,23 @@
         });
 
         document.getElementById('btnHitung').addEventListener('click', function() {
-            const harga = {{ $room->price }};
+            // Ambil harga dari input harga_kamar, hapus "Rp " dan titik pemisah ribuan
+            const hargaText = document.getElementById('harga_kamar').value;
+            const harga = parseInt(hargaText.replace(/\D/g, '')) || 0;
+            const tipeKamarSelect = document.getElementById('tipe_kamar').value;
             const durasi = parseInt(document.getElementById('durasi_menginap').value) || 1;
             const breakfast = document.getElementById('breakfast').checked;
+
+            // Validasi
+            if (!tipeKamarSelect) {
+                alert('Silakan pilih tipe kamar terlebih dahulu');
+                return;
+            }
+
+            if (!harga || harga <= 0) {
+                alert('Harga kamar tidak valid');
+                return;
+            }
 
             if (durasi < 1) {
                 alert('Durasi menginap minimal 1 hari');
@@ -733,8 +753,15 @@
         });
 
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            const roomId = document.getElementById('room_id').value;
             const totalBayar = parseFloat(document.getElementById('total_bayar').value);
             
+            if (!roomId) {
+                e.preventDefault();
+                alert('Silakan pilih tipe kamar terlebih dahulu');
+                return false;
+            }
+
             if (!totalBayar || totalBayar <= 0) {
                 e.preventDefault();
                 alert('Silakan hitung total bayar terlebih dahulu');
@@ -763,6 +790,97 @@
                     }
                 });
             }
+        });
+
+        // Load data kamar ke select
+        document.addEventListener('DOMContentLoaded', function() {
+            const tipeKamarSelect = document.getElementById('tipe_kamar');
+            const hargaKamarInput = document.getElementById('harga_kamar');
+            const roomIdInput = document.getElementById('room_id');
+            
+            console.log('DOMContentLoaded - Starting to fetch kamar data...');
+            
+            fetch('/api/kamar', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data received:', data);
+                if (data.success && data.data && data.data.length > 0) {
+                    console.log('Processing', data.data.length, 'kamar items');
+                    data.data.forEach(kamar => {
+                        console.log('Adding kamar:', kamar.name, 'price:', kamar.price);
+                        const option = document.createElement('option');
+                        option.value = kamar.id;
+                        option.textContent = kamar.name + ' - ' + kamar.category;
+                        option.dataset.price = kamar.price;
+                        tipeKamarSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('No data or success is false:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading rooms:', error);
+                alert('Gagal memuat data kamar');
+            });
+
+            // Event listener ketika user memilih tipe kamar
+            tipeKamarSelect.addEventListener('change', function() {
+                console.log('Select changed, value:', this.value);
+                if (this.value) {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const harga = selectedOption.dataset.price;
+                    
+                    console.log('Selected harga:', harga);
+                    
+                    // Update room_id hidden input
+                    roomIdInput.value = this.value;
+                    
+                    // Format dan tampilkan harga di input harga_kamar
+                    if (harga) {
+                        hargaKamarInput.value = 'Rp ' + Number(harga).toLocaleString('id-ID');
+                    }
+                } else {
+                    roomIdInput.value = '';
+                    hargaKamarInput.value = '';
+                }
+            });
+        });
+
+        document.querySelector('input[name="nomor_identitas"]').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 16) {
+                this.value = this.value.slice(0, 16);
+            }
+        });
+
+        // Validasi input durasi menginap - hanya angka
+        const durasiInput = document.getElementById('durasi_menginap');
+        
+        durasiInput.addEventListener('keydown', function(e) {
+            // Cek apakah key yang ditekan adalah angka (0-9)
+            const isNumber = (e.key >= '0' && e.key <= '9') || e.key === 'Backspace' || e.key === 'Delete' || e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Tab';
+            
+            if (!isNumber) {
+                e.preventDefault();
+                document.getElementById('durasiError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('durasiError').style.display = 'none';
+                }, 2000);
+            }
+        });
+
+        durasiInput.addEventListener('input', function(e) {
+            // Hapus karakter non-angka jika ada
+            this.value = this.value.replace(/[^0-9]/g, '');
         });
     </script>
 </body>

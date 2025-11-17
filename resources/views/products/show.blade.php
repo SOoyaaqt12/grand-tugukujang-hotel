@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -158,6 +159,7 @@
                 opacity: 0;
                 transform: translateY(50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -417,6 +419,63 @@
             color: #0a0a0a;
         }
 
+        /* VIDEO SECTION - Tambahkan sebelum @media queries */
+        .video-section {
+            margin-top: 80px;
+            background: rgba(26, 26, 46, 0.6);
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .video-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5b0 100%);
+            color: #0a0a0a;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+        }
+
+        /* Overlay untuk menghilangkan interaksi */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+            cursor: default;
+        }
+
+        @media (max-width: 768px) {
+            .video-section {
+                padding: 30px 20px;
+            }
+        }
+
         .footer {
             background: #0a0a0a;
             padding: 40px 20px;
@@ -445,6 +504,14 @@
 
             .features-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .video-section {
+                padding: 30px 20px;
+            }
+
+            .video-container {
+                padding-bottom: 75%;
             }
         }
 
@@ -518,13 +585,14 @@
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar" id="navbar">
         <a href="/" class="navbar-logo">
-            <img src="{{asset('storage/assets/images/logo.png')}}" class="navbar-logo-icon"/>
+            <img src="{{ asset('storage/assets/images/logo.png') }}" class="navbar-logo-icon" />
             <span class="navbar-logo-text">GRAND TUGU KUJANG</span>
         </a>
-        
+
         <ul class="navbar-menu" id="navbarMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
@@ -559,7 +627,8 @@
 
             <div class="gallery-section">
                 <div class="main-image-container">
-                    <img src="{{ asset($product->main_image) }}" alt="{{ $product->name }}" class="main-image" id="mainImage">
+                    <img src="{{ asset($product->main_image) }}" alt="{{ $product->name }}" class="main-image"
+                        id="mainImage">
                 </div>
             </div>
 
@@ -571,12 +640,12 @@
 
                     <h3 class="section-title" style="font-size: 28px; margin-top: 40px;">Fasilitas</h3>
                     <div class="decorative-line" style="margin: 20px 0;"></div>
-                    <div class="features-grid">                       
-                        @foreach($product->features as $feature)
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span class="feature-text">{{ trim($feature) }}</span>
-                        </div>
+                    <div class="features-grid">
+                        @foreach ($product->features as $feature)
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                <span class="feature-text">{{ trim($feature) }}</span>
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -614,6 +683,26 @@
                     <a href="/reservasi?room_id={{ $product->id }}" class="cta-button">Reservasi Sekarang</a>
                 </div>
             </div>
+
+            {{-- VIDEO SECTION - SECTION BARU --}}
+            {{-- VIDEO SECTION - Autoplay, Loop, No Controls --}}
+            @if ($product->video_url)
+                <div class="video-section">
+                    <span class="video-badge">🎬 Video Tour</span>
+                    <h2 class="section-title">Lihat Virtual Tour Kamar</h2>
+                    <div class="decorative-line" style="margin: 20px 0;"></div>
+
+                    <div class="video-container">
+                        <video autoplay loop muted playsinline preload="auto">
+                            <source src="{{ asset($product->video_url) }}" type="video/mp4">
+                            Browser Anda tidak mendukung video HTML5.
+                        </video>
+                        {{-- Overlay untuk disable klik pada video --}}
+                        <div class="video-overlay"></div>
+                    </div>
+                </div>
+            @endif
+
         </div>
     </section>
 
@@ -649,7 +738,7 @@
         });
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -662,4 +751,5 @@
         });
     </script>
 </body>
+
 </html>

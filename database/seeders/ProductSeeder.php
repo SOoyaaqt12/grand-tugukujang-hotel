@@ -12,9 +12,9 @@ class ProductSeeder extends Seeder
     {
         $rooms = [
             [
-                'name' => 'Family Suite',
-                'category' => 'Suite Keluarga',
-                'description' => 'Rasakan sensasi kekeluargaan di Family Suite kami yang menampilkan desain interior eksklusif, ruang tamu pribadi, dan pemandangan kota yang menakjubkan. Dilengkapi dengan fasilitas premium untuk pengalaman menginap yang tak terlupakan.',
+                'name' => 'Executive Suite',
+                'category' => 'Suite eksekutif',
+                'description' => 'Rasakan sensasi kekeluargaan di executive Suite kami yang menampilkan desain interior eksklusif, ruang tamu pribadi, dan pemandangan kota yang menakjubkan. Dilengkapi dengan fasilitas premium untuk pengalaman menginap yang tak terlupakan.',
                 'price' => 15000000,
                 'size' => 120,
                 'max_guests' => 10,
@@ -22,6 +22,7 @@ class ProductSeeder extends Seeder
                 'view_type' => 'City View',
                 'features' => ['5 King Size Bed', '120 m²', 'Jacuzzi Premium', 'Private Lounge', 'City View', 'Mini Bar'],
                 'main_image' => 'storage/assets/images/family.jpg',
+                'video_url' => "storage/assets/videos/excutive.mp4",
                 'badge' => 'Terpopuler',
                 'is_available' => true
             ],
@@ -36,6 +37,7 @@ class ProductSeeder extends Seeder
                 'view_type' => 'Garden View',
                 'features' => ['Queen/Twin Bed', '45 m²', 'Garden View', 'Rain Shower', 'Smart TV', 'Coffee Maker'],
                 'main_image' => 'storage/assets/images/deluxe.jpg',
+                'video_url' => 'storage/assets/videos/deluxe.mp4',
                 'badge' => null,
                 'is_available' => true
             ],
@@ -50,6 +52,7 @@ class ProductSeeder extends Seeder
                 'view_type' => 'Pool View',
                 'features' => ['Double/Twin Bed', '35 m²', 'Pool View', 'Smart TV 43"', 'Coffee Maker', 'High-Speed WiFi'],
                 'main_image' => 'storage/assets/images/standard.jpg',
+                'video_url' => 'storage/assets/videos/standard.mp4',
                 'badge' => 'Best Value',
                 'is_available' => true
             ],

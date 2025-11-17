@@ -122,12 +122,11 @@ class BookingController extends Controller
     /**
      * Success page after booking
      */
-    public function sukses()
+    public function sukses($id)
     {
-        if (!session()->has('success')) {
-            return redirect('/products');
-        }
-        return view('booking.sukses');
+        $booking = Booking::with('product')->findOrFail($id);
+        
+        return view('booking.sukses', compact('booking'));
     }
 
     /**
