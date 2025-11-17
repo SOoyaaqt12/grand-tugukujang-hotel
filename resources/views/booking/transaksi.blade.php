@@ -509,7 +509,7 @@
                                         <span class="badge badge-no">✗ Tidak</span>
                                     @endif
                                 </td>
-                                <td>Rp {{ number_format($booking->product->price, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($booking->total_bayar, 0, ',', '.') }}</td>
                                 <td>
                                     <form action="{{ route('booking.destroy', $booking->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus booking ini?')">
                                         @csrf

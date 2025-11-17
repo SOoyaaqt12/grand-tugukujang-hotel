@@ -33,4 +33,4 @@ Route::get('/transaksi', [BookingController::class, 'transaksi'])->name('booking
 Route::delete('/booking/{id}', [BookingController::class, 'destroy'])->name('booking.destroy');
 
 // Success page
-Route::get('/booking-sukses', [BookingController::class, 'sukses'])->name('booking.sukses');
+Route::get('/booking-sukses/{id}', [BookingController::class, 'sukses'])->name('booking.sukses');
